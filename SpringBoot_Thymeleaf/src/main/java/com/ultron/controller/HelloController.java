@@ -22,24 +22,37 @@ public class HelloController {
     }
 
     @GetMapping("/spring")
-    public String spring(){
-        return "spring";
-    }
-
-    @GetMapping("/springs")
     public ModelAndView springs(){
+
+        List<Spring> versions = new ArrayList();
+        Spring spring1 = new Spring();
+        spring1.setVersion("2.2.2 CURRENT GA");
+        spring1.setReference("https://docs.spring.io/spring-boot/docs/2.2.2.RELEASE/reference/html/");
+        spring1.setApi("https://docs.spring.io/spring-boot/docs/2.2.2.RELEASE/api/");
+
+        Spring spring2 = new Spring();
+        spring2.setVersion("2.2.3 SNAPSHOT");
+        spring2.setReference("https://docs.spring.io/spring-boot/docs/2.2.3.BUILD-SNAPSHOT/reference/html/");
+        spring2.setApi("https://docs.spring.io/spring-boot/docs/2.2.3.BUILD-SNAPSHOT/api/");
+
+        Spring spring3 = new Spring();
+        spring3.setVersion("2.1.12 SNAPSHOT");
+        spring3.setReference("https://docs.spring.io/spring-boot/docs/2.1.12.BUILD-SNAPSHOT/reference/html/");
+        spring3.setApi("https://docs.spring.io/spring-boot/docs/2.1.12.BUILD-SNAPSHOT/api/");
+
+        Spring spring4 = new Spring();
+        spring4.setVersion("2.1.11 GA");
+        spring4.setReference("https://docs.spring.io/spring-boot/docs/2.1.11.RELEASE/reference/html/");
+        spring4.setApi("https://docs.spring.io/spring-boot/docs/2.1.11.RELEASE/api/");
+
+        versions.add(spring1);
+        versions.add(spring2);
+        versions.add(spring3);
+        versions.add(spring4);
+
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("spring");
-
-        Spring spring = new Spring();
-        spring.setVersion("2.2.1");
-        spring.setReference("https://docs.spring.io/spring-boot/docs/2.2.2.RELEASE/reference/html/");
-        spring.setApi("https://docs.spring.io/spring-boot/docs/2.2.2.RELEASE/api/");
-
-        List<Spring> list = new ArrayList<>();
-        list.add(spring);
-
-        modelAndView.addObject(list);
+        modelAndView.addObject("versions",versions);
         return modelAndView;
     }
 }

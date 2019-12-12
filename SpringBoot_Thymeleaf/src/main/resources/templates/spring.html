@@ -5,34 +5,16 @@
     <title>Spring 文档</title>
 </head>
 <body>
-<!--<table border="1">-->
-<!--    <tr>-->
-<!--        <td>2.2.2 CURRENT GA</td>-->
-<!--        <td><a th:href="@{https://docs.spring.io/spring-boot/docs/2.2.2.RELEASE/reference/html/}">Reference Doc</a></td>-->
-<!--        <td><a th:href="@{https://docs.spring.io/spring-boot/docs/2.2.2.RELEASE/api/}">API Doc</a></td>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--        <td>2.2.3 SNAPSHOT</td>-->
-<!--        <td>Reference Doc</td>-->
-<!--        <td>API Doc</td>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--        <td>2.1.12 SNAPSHOT</td>-->
-<!--        <td>Reference Doc</td>-->
-<!--        <td>API Doc</td>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--        <td>2.1.11 GA</td>-->
-<!--        <td>Reference Doc</td>-->
-<!--        <td>API Doc</td>-->
-<!--    </tr>-->
-<!--</table>-->
-
 <table border="1">
-    <tr th:each="spring : ${springList}">
-        <td th:text="${spring.version}">2.2.2 CURRENT GA</td>
-        <td th:text="${spring.reference}"><a th:href="@{https://docs.spring.io/spring-boot/docs/2.2.2.RELEASE/reference/html/}">Reference Doc</a></td>
-        <td th:text="${spring.api}"><a th:href="@{https://docs.spring.io/spring-boot/docs/2.2.2.RELEASE/api/}">API Doc</a></td>
+    <thead>
+        <th>版本</th>
+        <th>文档</th>
+        <th>接口</th>
+    </thead>
+    <tr th:each="spring : ${versions}">
+        <td th:text="${spring.version}"></td>
+        <td><a th:href="@{${spring.reference}}">Reference Doc</a></td>
+        <td><a th:href="@{${spring.api}}">API Doc</a></td>
     </tr>
 </table>
 </body>
