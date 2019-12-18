@@ -1,9 +1,7 @@
 package com.ultron;
 
-import cn.hutool.core.util.ObjectUtil;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
 
 import java.io.*;
 import java.util.HashMap;
@@ -15,81 +13,36 @@ import java.util.Map;
  */
 public class CodeGenerator {
 
-    private static final String ENCODING = "UTF-8";
-    private static final String TEMPLATE_FILE = "generater.ftl";
+    private static final String TEMPLATE_PATH = "src/main/resources/templates";
+    private static final String CLASS_PATH = "src/main/java/com/ultron/entity/";
 
-    /**
-     * 获取模板文件
-     * @param fileName
-     * @param encoding
-     * @return
-     * @throws IOException
-     */
-    public static Template getTemplate(String fileName, String encoding) throws IOException {
-        Configuration configuration = new Configuration(Configuration.VERSION_2_3_29);
-        if (ObjectUtil.isNull(fileName)){
-            fileName = TEMPLATE_FILE;
-        }
-        if (ObjectUtil.isNull(encoding)){
-            encoding = ENCODING;
-        }
-        Template template = configuration.getTemplate(fileName,encoding);
-        return template;
-    }
+    public static void main(String[] args) {
 
-    /**
-     * 获取结果集
-     * @param documentPath
-     * @return
-     */
-    public static Map<String,Object> getDataMap(String documentPath){
-        Map<String,Object> maps = new HashMap<>();
-        return maps;
-    }
-
-    /**
-     * 生成实体模型
-     * @param modelPath
-     * @param modelName
-     * @param fileName
-     * @param encoding
-     * @param documentPath
-     * @throws TemplateException
-     */
-    public static void generaterModel(String modelPath,String modelName,String fileName,String encoding,String documentPath) throws TemplateException {
-        File file = new File(modelPath+"/"+modelName);
-        FileOutputStream fileOutputStream = null;
-        OutputStreamWriter outputStreamWriter = null;
-        BufferedWriter bufferedWriter = null;
+        Configuration configuration = new Configuration();
+        Writer writer = null;
         try {
-            fileOutputStream = new FileOutputStream(file);
-            outputStreamWriter = new OutputStreamWriter(fileOutputStream);
-            bufferedWriter = new BufferedWriter(outputStreamWriter);
-            getTemplate(fileName,encoding).process(getDataMap(documentPath),bufferedWriter);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            configuration.setDirectoryForTemplateLoading(new File(TEMPLATE_PATH));
+
+            Map<String, Object> dataMap = new HashMap<String, Object>();
+            dataMap.put("classpath", "com.ultron.entity");
+            dataMap.put("classname", "User");
+
+            Template template = configuration.getTemplate("generater.ftl");
+
+            File docFile = new File(CLASS_PATH + "User.java");
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(docFile)));
+
+            template.process(dataMap, writer);
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (ObjectUtil.isNotNull(bufferedWriter)) {
-                try {
-                    bufferedWriter.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
             try {
-                bufferedWriter.close();
-                outputStreamWriter.close();
-                fileOutputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+                if (null != writer) {
+                    writer.flush();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
             }
         }
-
-    }
-
-    public static void main(String[] args) throws TemplateException {
-        generaterModel(null,null,null,null,null);
     }
 }
